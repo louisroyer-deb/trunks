@@ -1,0 +1,39 @@
+From: Louis Royer <infos.louis.royer@gmail.com>
+Date: Sat, 12 Apr 2025 18:57:10 +0200
+Subject: Fix kernel version check
+
+---
+ runtime/trunks.go | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/runtime/trunks.go b/runtime/trunks.go
+index 6813542..21e0ce7 100644
+--- a/runtime/trunks.go
++++ b/runtime/trunks.go
+@@ -65,7 +65,7 @@ func (t *TrunksConfig) FlushTables() error {
+ }
+ 
+ func (t *TrunksConfig) isKernelVersionBugged() bool {
+-	if t.KernelVersionCheck {
++	if !t.KernelVersionCheck {
+ 		return false
+ 	}
+ 	// See https://github.com/shynuu/trunks/issues/6
+@@ -96,7 +96,7 @@ func (t *TrunksConfig) Run() {
+ 		retun := fmt.Sprintf("%dmbit", int64(math.Round(t.Bandwidth.Return)))
+ 		delay := fmt.Sprintf("%dms", int64(math.Round(t.Delay.Value/2)))
+ 		offset := fmt.Sprintf("%dms", int64(math.Round(t.Delay.Offset/2)))
+-		jitter := t.Delay.Offset > 1 && t.isKernelVersionBugged()
++		jitter := t.Delay.Offset > 1 && !t.isKernelVersionBugged()
+ 
+ 		// qlen formula: 1.5 * bandwidth[bits/s] * latency[s] / mtu[bits]
+ 		qlenForward := fmt.Sprintf("%d", int64(math.Round(1.5*(t.Bandwidth.Forward*1000000)*(t.Delay.Value/(2*1000))/(8*1500))))
+@@ -137,7 +137,7 @@ func (t *TrunksConfig) Run() {
+ 		returnRest := fmt.Sprintf("%dmbit", int64(math.Round(t.Bandwidth.Return))-1)
+ 		delay := fmt.Sprintf("%dms", int64(math.Round(t.Delay.Value/2)))
+ 		offset := fmt.Sprintf("%dms", int64(math.Round(t.Delay.Offset/2)))
+-		jitter := t.Delay.Offset > 1 && t.isKernelVersionBugged()
++		jitter := t.Delay.Offset > 1 && !t.isKernelVersionBugged()
+ 
+ 		// qlen formula: 1.5 * bandwidth[bits/s] * latency[s] / mtu[bits]
+ 		qlenForwardVoIP := fmt.Sprintf("%d", int64(math.Round(1.5*(2*1000000)*(t.Delay.Value/(2*1000))/(8*1500))))

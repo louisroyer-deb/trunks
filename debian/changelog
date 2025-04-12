@@ -1,3 +1,9 @@
+trunks (2.0.2+dfsg-3) bookworm; urgency=medium
+
+  * Fix kernel version check bug 
+
+ -- Louis Royer <louis.royer@irit.fr>  Sat, 12 Apr 2025 18:57:53 +0200
+
 trunks (2.0.2+dfsg-2) bookworm; urgency=medium
 
   * Update Built-Using to Static-Built-Using
